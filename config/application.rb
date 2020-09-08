@@ -10,6 +10,9 @@ module Myapp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+    config.time_zone = "Tokyo"
+    # エラーメッセージに日本語が使われるようになる。ただし、日本語の辞書データ(rails-i18n)が必要
+    config.i18n.default_locale = :ja
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

@@ -1,0 +1,5 @@
+<%# formからAjaxリクエストを送った時のレスポンスの扱いは自動化されていない %>
+<%# DHHとしはAjaxのバリデーションエラーはSJRで対応すると良いと考えている %>
+<%# SJR（Server-generated JavaScript Responses） %>
+<%# jメソッドはescape_javascriptメソッドのエイリアス 改行やクォートなどをエスケープする %>
+document.getElementById("errors").innerHTML = "<%= j render("errors", errors: @event.errors) %>"

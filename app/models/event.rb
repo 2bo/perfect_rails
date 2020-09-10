@@ -8,6 +8,11 @@ class Event < ApplicationRecord
     validates :end_at, presence: true
     validate :start_at_should_be_before_end_at
 
+    def created_by?(user)
+        return false unless user
+        owner_id == user.id
+    end
+
     private
     
     def start_at_should_be_before_end_at
@@ -16,4 +21,5 @@ class Event < ApplicationRecord
             errors.add(:start_at, "は終了時間よりも前に設定してください")
         end
     end
+
 end

@@ -1,0 +1,7 @@
+-# ビューテンプレートの探索はapp/[アクションが所属するコントローラ名]が見つからなければ
+-# 親のコントローラ名(ApplicationController)で探索する
+-# そのため汎用的なテンプレートはapp/views/application/配下に配置すると便利
+.alert-danger
+    %ul.mb-0
+        - errors.full_messages.each do |message|
+            %li= message

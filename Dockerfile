@@ -5,7 +5,19 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 
 ENV EDITOR=vim
 
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client yarn vim
+
+# aptのダウンロード先リポジトリにgoogleを追加するため、keyを追加
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+# aptのダウンロード先リポジトリにdl.google.com/linux/chrome/debを追加
+RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client yarn vim google-chrome-stable unzip
+
+RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` \
+    && curl -sS -o /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
+    && unzip /tmp/chromedriver_linux64.zip \
+    && mv chromedriver /usr/local/bin/
+
 RUN mkdir /myapp
 WORKDIR /myapp
 COPY Gemfile /myapp/Gemfile

@@ -5,4 +5,5 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     #パーフェクトRoRには記載がない。Dockerのrootユーザで実行するために追加
     options.add_argument('--no-sandbox') 
   end
+  include SignInHelper
 end

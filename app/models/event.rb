@@ -1,8 +1,13 @@
 class Event < ApplicationRecord
+    # イベントが削除されたときに関連するActiveStorage::Attachmentのみが削除される
+    # ActiveStorage::Blobと画像やサムネイルは削除されない
+    has_one_attached :image, dependent: false
     # "dependent: :destroy"指定すると親となるオブジェクトのレコードが削除された時に
     # 子のレコードも同時に削除される
     has_many :tickets, dependent: :destroy
     belongs_to :owner, class_name: "User"
+    attr_accessor :remove_image
+    before_save :remove_image_if_user_accept
 
     validates :name, length: { maximum: 50 }, presence: true
     validates :place, length: { maximum: 100 }, presence: true
@@ -25,4 +30,7 @@ class Event < ApplicationRecord
         end
     end
 
+    def remove_image_if_user_accept
+        self.image = nil if ActiveRecord::Type::Boolean.new.cast(remove_image)
+    end
 end

@@ -3,11 +3,11 @@ require 'test_helper'
 class EventTest < ActiveSupport::TestCase
   test '#created_by? owner_idと引数の#idが同じ時' do
     event = FactoryBot.create(:event)
-    user = User.new
-    # stubで既存メソッドの戻り値を一時的に差し替える
-    user.stub(:id, event.owner_id) do
-      assert_equal(true, event.created_by?(user))
-    end
+    # user.idに対して、event.owner_idを返すモック
+    user = MiniTest::Mock.new.expect(:id, event.owner_id)
+    assert_equal(true, event.created_by?(user))
+    # モックのuser.idが呼び出されたことの確認
+    user.verify
   end
 
   test '#created_by? owner_idと引数の#idが異なる時' do
@@ -20,4 +20,22 @@ class EventTest < ActiveSupport::TestCase
     event = FactoryBot.create(:event)
     assert_equal(false, event.created_by?(nil))
   end
+
+  test 'start_at_should_be_before_end_at validation OK' do
+    start_at = rand(1..30).days.from_now
+    end_at = start_at + rand(1..30).hours
+    # 保存してない状態のEventオブジェクトの作成
+    event = FactoryBot.build(:event, start_at: start_at, end_at: end_at)
+    event.valid?
+    assert_empty(event.errors[:start_at])
+  end
+
+  test 'start_at_should_be_before_end_at validation error' do
+    start_at = rand(1..30).days.from_now
+    end_at = start_at - rand(1..30).hours
+    event = FactoryBot.build(:event, start_at: start_at, end_at: end_at)
+    envet.valid?
+    assert_not_empty(event.errors[:start_at])
+  end
+
 end

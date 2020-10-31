@@ -37,6 +37,8 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_storage_validations (0.8.9)
+      rails (>= 5.2.0)
     activejob (6.0.3.2)
       activesupport (= 6.0.3.2)
       globalid (>= 0.3.6)
@@ -112,6 +114,18 @@ GEM
     jbuilder (2.10.0)
       activesupport (>= 5.0.0)
     jwt (2.2.2)
+    kaminari (1.2.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
+      actionview
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
+      activerecord
+      kaminari-core (= 1.2.1)
+    kaminari-core (1.2.1)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -259,6 +273,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_storage_validations (~> 0.8.8)
   bootsnap (>= 1.4.2)
   byebug
   capybara (>= 2.15)
@@ -267,6 +282,7 @@ DEPENDENCIES
   html2haml (~> 2.2.0)
   image_processing (~> 1.2)
   jbuilder (~> 2.7)
+  kaminari (~> 1.2.0)
   listen (~> 3.2)
   omniauth (~> 1.9.1)
   omniauth-github (~> 1.4.0)

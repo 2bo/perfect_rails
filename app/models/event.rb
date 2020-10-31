@@ -1,4 +1,7 @@
 class Event < ApplicationRecord
+
+    attr_accessor :remove_image
+
     # イベントが削除されたときに関連するActiveStorage::Attachmentのみが削除される
     # ActiveStorage::Blobと画像やサムネイルは削除されない
     has_one_attached :image, dependent: false
@@ -6,7 +9,7 @@ class Event < ApplicationRecord
     # 子のレコードも同時に削除される
     has_many :tickets, dependent: :destroy
     belongs_to :owner, class_name: "User"
-    attr_accessor :remove_image
+
     before_save :remove_image_if_user_accept
 
     validates :name, length: { maximum: 50 }, presence: true
@@ -15,6 +18,10 @@ class Event < ApplicationRecord
     validates :start_at, presence: true
     validates :end_at, presence: true
     validate :start_at_should_be_before_end_at
+    validates :image,
+     content_type: [:png, :jpg, :jpeg],
+     size: { less_than_or_equal_to: 10.megabytes },
+     dimension: { width: { max: 2000 }, height: { max: 2000 } }
 
     def created_by?(user)
         return false unless user

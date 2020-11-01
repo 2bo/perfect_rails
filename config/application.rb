@@ -19,5 +19,11 @@ module Myapp
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # アプリケーションで独自定義した例外が発生したときに、pulibc/500.html以外を表示したい場合の例
+    # config.action_dispatch.rescue_response.merge!(
+    #   "YourNewException" => :not_found
+    # )
+
   end
 end

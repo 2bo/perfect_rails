@@ -65,3 +65,5 @@ gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 gem 'rails-i18n', '~> 6.0.0'
 
 gem 'kaminari', '~> 1.2.0'
+
+gem 'searchkick', '~> 4.3.0'

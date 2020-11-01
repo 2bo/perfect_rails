@@ -47,7 +47,7 @@ class EventsTest < ApplicationSystemTestCase
 
   test "/events/:idページを表示して削除ボタンを押す" do
     sign_in_as(FactoryBot.create(:user))
-    event = FactoryBot.create(:event, owner: current)
+    event = FactoryBot.create(:event, owner: current_user)
     visit event_url(event)
     assert_difference("Event.count", -1) do
       accept_confirm do

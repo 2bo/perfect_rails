@@ -9,12 +9,25 @@ jobs:
     # ジョブ実行はステップと呼ばれる単位で処理を実行する
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby 2.6
+      - name: Set up Ruby 2.7
         # 任意のバージョンのRuby実行環境を用意するアクション
         uses: ruby/setup-ruby@v1
         with:
           # 使用するRubyバージョンの指定
-          ruby-version: 2.6
+          ruby-version: 2.7
+      - name: Configure sysctl limits
+        run: |
+          sudo swapoff -a
+          sudo sysctl -w vm.swappiness=1
+          sudo sysctl -w fs.file-max=262144
+          sudo sysctl -w vm.max_map_count=262144
+      - name: Run Elasticsearch
+        # リポジトリ名@タグ名(またはブランチ名)
+        uses: 2bo/elasticsearch-with-plugins-action@v1
+        with:
+          stack-version: 7.6.0
+          plugins: |
+            analysis-kuromoji
       - name: Build and test
         env:
          RAILS_ENV: test

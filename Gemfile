@@ -67,3 +67,5 @@ gem 'rails-i18n', '~> 6.0.0'
 gem 'kaminari', '~> 1.2.0'
 
 gem 'searchkick', '~> 4.3.0'
+
+gem 'sqlite3', '~> 1.4'

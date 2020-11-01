@@ -11,7 +11,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 # aptのダウンロード先リポジトリにdl.google.com/linux/chrome/debを追加
 RUN echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
 
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client yarn vim google-chrome-stable unzip fonts-ipafont
+RUN apt-get update -qq && apt-get install -y nodejs postgresql-client yarn vim google-chrome-stable unzip fonts-ipafont libvips libvips-dev
 
 RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` \
     && curl -sS -o /tmp/chromedriver_linux64.zip http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \

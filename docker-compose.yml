@@ -9,7 +9,9 @@ services:
     environment:
       POSTGRES_PASSWORD: password
   web:
-    build: .
+    build: 
+      context: ./
+      dockerfile: ./Dockerfiles/rails/Dockerfile
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
       - .:/myapp
@@ -17,3 +19,25 @@ services:
       - "3001:3000"
     depends_on:
       - db
+    environment: 
+      ELASTICSEARCH_URL: http://es:9200
+  es:
+    build:
+      context: ./
+      dockerfile: ./Dockerfiles/elasticsearch/Dockerfile
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+
+volumes:
+  es_data:
+    driver: local

@@ -1,8 +1,18 @@
 class Event < ApplicationRecord
+
+    # japaneseを指定することで、Kuromojiを使用するようにする
+    searchkick language: "japanese"
+    attr_accessor :remove_image
+
+    # イベントが削除されたときに関連するActiveStorage::Attachmentのみが削除される
+    # ActiveStorage::Blobと画像やサムネイルは削除されない
+    has_one_attached :image, dependent: false
     # "dependent: :destroy"指定すると親となるオブジェクトのレコードが削除された時に
     # 子のレコードも同時に削除される
     has_many :tickets, dependent: :destroy
     belongs_to :owner, class_name: "User"
+
+    before_save :remove_image_if_user_accept
 
     validates :name, length: { maximum: 50 }, presence: true
     validates :place, length: { maximum: 100 }, presence: true
@@ -10,10 +20,26 @@ class Event < ApplicationRecord
     validates :start_at, presence: true
     validates :end_at, presence: true
     validate :start_at_should_be_before_end_at
+    validates :image,
+     content_type: [:png, :jpg, :jpeg],
+     size: { less_than_or_equal_to: 10.megabytes },
+     dimension: { width: { max: 2000 }, height: { max: 2000 } }
 
     def created_by?(user)
         return false unless user
         owner_id == user.id
+    end
+
+    # elasticsearchのインデックスに追加される情報
+    # `bin/rails r Event.reindex`でインデックスをelasticsearchに登録する
+    def search_data
+        {
+            name: name,
+            place: place,
+            content: content,
+            owner_name: owner&.name,
+            start_at: start_at
+        }
     end
 
     private
@@ -25,4 +51,7 @@ class Event < ApplicationRecord
         end
     end
 
+    def remove_image_if_user_accept
+        self.image = nil if ActiveRecord::Type::Boolean.new.cast(remove_image)
+    end
 end

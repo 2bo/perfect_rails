@@ -1,0 +1,30 @@
+name: Rails Tests
+# トリガーとするGitHubのイベント
+on: [push, pull_request]
+# ワークフローの一連の処理
+jobs:
+  build:
+    # 実行環境OSの指定
+    runs-on: ubuntu-latest
+    # ジョブ実行はステップと呼ばれる単位で処理を実行する
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby 2.6
+        # 任意のバージョンのRuby実行環境を用意するアクション
+        uses: ruby/setup-ruby@v1
+        with:
+          # 使用するRubyバージョンの指定
+          ruby-version: 2.6
+      - name: Build and test
+        env:
+         RAILS_ENV: test
+        # OSのシェル上でコマンドを実行する設定
+        run: |
+          sudo apt-get -yqq install libsqlite3-dev
+          bundle install --jobs 4 --retry 3
+          bin/rails db:create
+          bin/rails db:migrate
+          bin/yarn install
+          bin/rails test
+          bin/rails test:system
+          

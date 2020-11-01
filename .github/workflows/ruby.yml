@@ -9,12 +9,12 @@ jobs:
     # ジョブ実行はステップと呼ばれる単位で処理を実行する
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Ruby 2.7
+      - name: Set up Ruby 2.7.1
         # 任意のバージョンのRuby実行環境を用意するアクション
         uses: ruby/setup-ruby@v1
         with:
           # 使用するRubyバージョンの指定
-          ruby-version: 2.7
+          ruby-version: 2.7.1
       - name: Configure sysctl limits
         run: |
           sudo swapoff -a

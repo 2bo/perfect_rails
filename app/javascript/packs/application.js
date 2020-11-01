@@ -7,6 +7,7 @@ require("@rails/ujs").start()
 require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
+require("get_form_turbolinks")
 
 // yarnを利用してインストールしたファイルをwebpackの管理下に加えるため
 // app/javascript/packs/application.jsに、それぞれ配置したファイル名を追記します

@@ -1,5 +1,7 @@
 class Event < ApplicationRecord
 
+    # japaneseを指定することで、Kuromojiを使用するようにする
+    searchkick language: "japanese"
     attr_accessor :remove_image
 
     # イベントが削除されたときに関連するActiveStorage::Attachmentのみが削除される
@@ -26,6 +28,18 @@ class Event < ApplicationRecord
     def created_by?(user)
         return false unless user
         owner_id == user.id
+    end
+
+    # elasticsearchのインデックスに追加される情報
+    # `bin/rails r Event.reindex`でインデックスをelasticsearchに登録する
+    def search_data
+        {
+            name: name,
+            place: place,
+            content: content,
+            owner_name: owner&.name,
+            start_at: start_at
+        }
     end
 
     private

@@ -6,7 +6,7 @@ class UserRegistrationForm
     attribute :password, :string
     attribute :password_confirmation, :string
 
-    validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+    validates :email, email: true
     validate :email_is_not_taken_by_another
     validates :password, format: { with: /\A[\p{ascii}&&[^\x20]]{8,72}\z/ }, confirmation: { allow_blank: true }
     validates :terms_of_service, acceptance: { allow_nil: false }

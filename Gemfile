@@ -45,6 +45,8 @@ group :development do
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
+  gem 'brakeman' #脆弱性解析 bundle exec brakeman
+  gem 'rack-mini-profiler', require: false # ローカルで動かすことができるパフォーマンス計測ツール
 end
 
 group :test do
@@ -72,3 +74,8 @@ gem 'kaminari', '~> 1.2.0'
 gem 'searchkick', '~> 4.3.0'
 
 gem 'sqlite3', '~> 1.4'
+
+gem 'simplecov', require: false, group: :test # テストカバレッジ
+gem 'coveralls', require: false, group: :test # テストカバレッジ
+
+gem 'skylight' # 運用中のアプリケーションのパフォーマンスを測定するサービス

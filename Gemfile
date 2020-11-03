@@ -79,3 +79,5 @@ gem 'simplecov', require: false, group: :test # テストカバレッジ
 gem 'coveralls', require: false, group: :test # テストカバレッジ
 
 gem 'skylight' # 運用中のアプリケーションのパフォーマンスを測定するサービス
+
+gem 'active_decorator'
